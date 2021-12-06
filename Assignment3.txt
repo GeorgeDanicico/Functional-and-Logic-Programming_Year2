@@ -1,0 +1,129 @@
+1.a)
+MATHEMATICAL MODEL:
+findElem(L1L2...Ln, E) = {
+	if n == 0 then return 0
+	if L1 == E then return 1
+	if L1 != E then return findElem(L2...Ln, E).
+}
+
+removeDuplicates(L1L2...Ln, ResultList) = {
+	if n == 0 return [],
+	if findElem(ResultList, L1) = 0 then RL1 = L1 U ResultList, return removeDuplicates(L2...Ln, RL1),
+	otherwise return removeDuplicates(L2...Ln, ResultList).
+}
+
+swapElements(L1L2...Ln, Flag = 0) = {
+	if n = 0 then return false.
+	if n = 1 and Flag = 1 then return true
+		else return false;
+	if L2 < L1, L1 <=> L2, Flag = 1 return swapElements(L1L3...Ln, Flag),
+	otherwise return swapElements(L2...Ln, Flag).
+}
+
+sortList(List) = {
+	if n == 0 then return []
+	if swapElements(List, 0) == false return List // it return false if the List is already sorted, however if it returns true, it did modify the list by swaping 2 elements.
+	otherwise return sortList(List)
+}
+
+findElem([], _, 0).
+findElem([H|_], H, 1):- !.
+findElem([_|T], E, R):-
+    findElem(T, E, R).
+
+removeDuplicates([], []).
+removeDuplicates([H|T], [H|R]):-
+    removeDuplicates(T,R),
+    findElem(R, H, F), F =:= 0, !.
+removeDuplicates([_|T], R):-
+    removeDuplicates(T, R).
+
+swapElements(L1L2...Ln, Flag = 0) = {
+	if n = 0 then return false.
+	if n = 1 and Flag = 1 then return true
+		else return false;
+	if L2 < L1, L1 <=> L2, Flag = 1 return swapElements(L1L3...Ln, Flag),
+	otherwise return swapElements(L2...Ln, Flag).
+}
+
+sortList(L, SL):-
+   swapElements(L, NL), !,
+   sortList(NL, SL).
+sortList(SL, SL).
+
+main(L, R):-
+    removeDuplicates(L, R1),
+    sortList(R1, R).
+
+
+b)
+
+MATHEMATICAL MODEL:
+findElem(L1L2...Ln, E) = {
+	if n == 0 then return 0
+	if L1 == E then return 1
+	if L1 != E then return findElem(L2...Ln, E).
+}
+
+removeDuplicates(L1L2...Ln, ResultList) = {
+	if n == 0 return [],
+	if findElem(ResultList, L1) = 0 then RL1 = L1 U ResultList, return removeDuplicates(L2...Ln, RL1),
+	otherwise return removeDuplicates(L2...Ln, ResultList).
+}
+
+swapElements(L1L2...Ln) = {
+	if n = 0 then return false.
+	if L2 < L1, L1 <=> L2, return swapElements(L1L3...Ln),
+	otherwise return swapElements(L2...Ln).
+}
+
+sortList(List) = {
+	if n == 0 then return []
+	if swapElements(List, 0) == false return List // it return false if the List is already sorted, however if it returns true, it did modify the list by swaping 2 elements.
+	otherwise return sortList(List)
+}
+
+sortSubLists(L1L2...Ln) = {
+	if n == 0 then return []
+	if atomic(L1) then return L1 U sortSubLists(L2...Ln),
+	otherwise removeDuplicates(L1), sortList(L1) return L1 U sortSubLists(L2...Ln).
+}
+
+findElem([], _, 0).
+findElem([H|_], H, 1):- !.
+findElem([_|T], E, R):-
+    findElem(T, E, R).
+
+removeDuplicates([], []).
+removeDuplicates([H|T], [H|R]):-
+    removeDuplicates(T,R),
+    findElem(R, H, F), F =:= 0, !.
+removeDuplicates([_|T], R):-
+    removeDuplicates(T, R).
+
+swapElements([H1, H2|T], [H2, H1|T]):-
+    H2 < H1.
+swapElements([H|T], [H|NT]):-
+    swapElements(T, NT).
+
+sortList([], []).
+sortList(L, SL):-
+   	swapElements(L, NL), !,
+    sortList(NL, SL).
+sortList(SL, SL).
+
+
+sortSubList([], []).
+sortSubList([H|T], [H|R]):-
+    atomic(H), !,
+    sortSubList(T, R).
+sortSubList([H|T], R):-
+    removeDuplicates(H, RD),
+    sortList(RD, SL),
+    sortSubList(T,R1),
+    R=[SL|R1].
+
+main(L, R):-
+    sortSubList(L, R).
+    
+    

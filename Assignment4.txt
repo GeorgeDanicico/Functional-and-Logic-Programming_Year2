@@ -1,0 +1,29 @@
+Mathematical model p3:
+
+findSol(N, D) = {
+		if N = 0, then return []
+		otherwise return D U findSol(N - D, D + 1)
+		}
+
+decompose(N, D) = {
+		if N / 2 < D, return []
+		if N / 2 >= D, findSol(N, D)
+		if N / 2 >= D, decompose(N, D + 1).  
+}
+
+
+findSol(0, _, []).
+findSol(N, D, [D|R]):- N >= D,
+    N1 is N - D, D1 is D + 1,
+    findSol(N1, D1, R).
+
+decompose(N, D, R):-
+    N1 is N // 2, N1 >= D,
+    findSol(N, D, R).
+decompose(N, D, R):-
+    N1 is N // 2, N1 >= D,
+    D1 is D + 1,
+    decompose(N, D1, R).
+
+findAll(N, R):-
+    findall(R1, decompose(N, 1, R1), R).

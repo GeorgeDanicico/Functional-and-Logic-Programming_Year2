@@ -1,0 +1,73 @@
+Mathematical model Lab2:
+
+3a.
+
+nOccCol(l1l2....ln, element, occ) = {
+	if n == 0, then return 0;
+	else if element == l1 return nOccCol(l2...ln, element, occ + 1);
+	else return nOccCol(l2...ln, element, occ);
+}
+
+remove(l1l2...ln, L1L2...Ln) = {
+	if n == 0, then return [];
+	else if nOccCol(L1L2...Ln, element, 0) > 1, then return remove(l2...ln, L1L2...Ln);
+	else return l1 U remove(l2...ln, L1L2...Ln);
+}
+
+% nOccCol(list -> list, element -> number, occurences -> number, result -> number)
+% nOccCol(i, i, i, o)
+nOccCol([], _, Col, Col).
+nOccCol([E|T], E, Col, R):-
+    Col1 is Col + 1,
+    nOccCol(T, E, Col1, R).
+nOccCol([H|T], E, Col, R):-
+    H\=E,
+    nOccCol(T, E, Col, R).
+
+% remove(list -> list, copyList -> list, resultList -> list)
+% remove(i, i, o)
+remove([], _, []).
+remove([H|T], LC, R):-
+    nOccCol(LC, H, 0, R1),
+    R1 > 1, !, 
+    remove(T, LC, R).
+remove([H|T], LC, [H|R]):-
+    remove(T, LC, R).
+
+3b.
+
+findMaxCol(l1l2...ln, max) = {
+	if n == 0, then return 0;
+	else if l1 > max, then return findMaxCol(l2...ln, l1);
+	else return findMaxCol(l2...ln, max);
+}
+
+removeMax(l1l2...ln, max) = {
+	if n == 0, then return [];
+	else if l1 == max then return removeMax(l2...ln, max);
+	else return l1 U removeMax(l2...ln, max);
+}
+
+% findMaxCol(list -> list, col -> number, R -> number)
+% findMaxCol(i, i, 0)
+
+findMaxCol([], Col, Col).
+findMaxCol([H|T], Col, R):-
+    H > Col, !,
+    Col1 is H,
+    findMaxCol(T, Col1, R).
+findMaxCol([_|T], Col, R):-
+    findMaxCol(T, Col, R).
+
+% remove(list -> list, E -> number, resultList -> list)
+% remove(i, i, o)
+removeMax([], _, []).
+removeMax([H|T], E, [H|R]):-
+    H \= E, !,
+    removeMax(T,E,R).
+removeMax([E|T], E, R):-
+    removeMax(T, E, R).
+
+main(L, R):-
+    findMaxCol(L, 0, Max),
+    removeMax(L, Max, R).

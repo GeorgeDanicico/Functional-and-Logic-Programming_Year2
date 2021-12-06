@@ -1,0 +1,41 @@
+(defun product(l)
+       (cond
+        ((null l) 1)
+        (t (* (car l) (product (cdr l))))
+        )
+)
+
+(defun replaceFO(l e o)
+  (cond
+   ((null l) nil)
+   ((equal (car l) e) (cons o (cdr l)))
+   (t (cons (car l) (replaceFO (cdr l) e o)))
+   )
+)
+
+
+(defun countOcc(l e)
+  (cond
+   ((null l) 0)
+   ((equal (car l) e) (+ 1 (countOcc (cdr l) e)))
+   (t (countOcc (cdr l) e) )
+   )
+)
+
+(defun deleteOcc(l e)
+	(cond 
+		((null l) nil)
+		((equal (car l) e) (deleteOcc (cdr l) e))
+		(t (cons (car l) (deleteOcc (cdr l) e)))
+	)
+)
+
+(defun pairs(l)
+	(cond
+		((null l) nil)
+		(t (cons (list (car l) (countOcc l (car l))) (pairs (deleteOcc l (car l)))))
+	)
+)
+
+
+
